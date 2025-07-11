@@ -1,0 +1,17 @@
+[
+  {
+    "name": "Scar Wallpaper 1",
+    "price": 3,
+    "file": "wallpaper_1.jpg"
+  },
+  {
+    "name": "Audio Clip: Heartbeat Break",
+    "price": 5,
+    "file": "audio_clip_1.mp3"
+  },
+  {
+    "name": "Poem: Burnt Pages",
+    "price": 2,
+    "file": "scar_poem_1.txt"
+  }
+]

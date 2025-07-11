@@ -1,0 +1,118 @@
+body {
+  background-color: #0b0b0b;
+  color: #f54242;
+  font-family: 'Courier New', monospace;
+  padding: 20px;
+  max-width: 600px;
+  margin: auto;
+}
+
+h2 {
+  color: #ff4444;
+  border-bottom: 2px solid #ff4444;
+  padding-bottom: 5px;
+}
+
+a {
+  color: #ff4444;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+form, select, input, button {
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+button {
+  background-color: #ff4444;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+button:hover {
+  background-color: #cc0000;
+}
+
+/* Avatar toggle styles */
+.avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+  border: 2px solid #f54242;
+  object-fit: cover;
+}
+
+/* Quote animation */
+.quote {
+  animation: fadeIn 2s ease-in;
+  font-style: italic;
+  color: #ff8888;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* PULSE EFFECT */
+.pulse-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 30px 0;
+}
+
+.heart-pulse {
+  width: 80px;
+  height: 80px;
+  background-color: #f54242;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #f54242;
+  animation: pulseBeat 1.5s infinite;
+}
+
+@keyframes pulseBeat {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 10px #f54242;
+  }
+  50% {
+    transform: scale(1.3);
+    box-shadow: 0 0 25px #ff5e5e;
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 10px #f54242;
+  }
+}
+
+.scar-challenge {
+  margin-top: 20px;
+  padding: 15px;
+  background: #111;
+  color: #ff4444;
+  border-left: 4px solid #ff4444;
+  animation: pulse 2s infinite alternate;
+}
+
+.journal-entries {
+  margin-top: 20px;
+  padding: 10px;
+  background: #111;
+  color: #eee;
+  border-radius: 10px;
+}
+
+.entry {
+  margin-bottom: 20px;
+  padding: 10px;
+  border-left: 4px solid #ff4444;
+  background: #1a1a1a;
+  border-radius: 6px;
+}

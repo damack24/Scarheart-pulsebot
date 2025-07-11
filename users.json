@@ -1,0 +1,32 @@
+{
+  "seaven901@gmail.com": {
+    "password": "Katt@101",
+    "tokens": 2,
+    "history": [
+      {
+        "date": "2025-07-11",
+        "mood": "good"
+      },
+      {
+        "date": "2025-07-11",
+        "mood": "good"
+      },
+      {
+        "date": "2025-07-11",
+        "mood": "strong"
+      },
+      {
+        "date": "2025-07-11",
+        "mood": "numb",
+        "challenge": "Take a deep breath, name what you\u2019re grateful for right now.",
+        "reflection": "Toda was win even when odds was against me."
+      },
+      {
+        "date": "2025-07-11",
+        "mood": "healing",
+        "challenge": "Take a deep breath, name what you\u2019re grateful for right now.",
+        "reflection": "Today was good"
+      }
+    ]
+  }
+}

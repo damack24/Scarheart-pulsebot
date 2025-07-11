@@ -1,0 +1,21 @@
+<h2>💔 ScarHeart Pulse</h2>
+<p>{{ quote }}</p>
+
+<form method="POST">
+  <label>Your mood:</label>
+  <select name="mood">
+    <option value="good">Good</option>
+    <option value="okay">Okay</option>
+    <option value="bad">Bad</option>
+    <option value="angry">Angry</option>
+    <option value="sad">Sad</option>
+  </select>
+  <button type="submit">Check-In</button>
+</form>
+
+{% if message %}
+  <p>{{ message }}</p>
+{% endif %}
+
+<p>ScarTokens: 💎 {{ tokens }}</p>
+<a href="/store">Go to Store</a> | <a href="/logout">Logout</a>

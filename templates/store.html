@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Store – ScarHeart</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <h2>🛍️ ScarHeart Store</h2>
+  <p>💎 Your ScarTokens: {{ tokens }}</p>
+
+  {% if message %}
+    <p><strong>{{ message }}</strong></p>
+  {% endif %}
+
+  <!-- Download All Button -->
+  {% if tokens >= 10 %}
+    <form method="POST">
+      <button type="submit" name="item" value="all">🔓 Unlock Everything (10 tokens)</button>
+    </form>
+    <hr>
+  {% endif %}
+
+  <!-- Individual Items -->
+  <form method="POST">
+    {% for item in store %}
+      <div style="margin-bottom:10px;">
+        <strong>{{ item.name }}</strong> – {{ item.price }} tokens<br>
+        <button type="submit" name="item" value="{{ loop.index0 }}">Unlock</button>
+      </div>
+    {% endfor %}
+  </form>
+
+  <a href="/pulse">⬅️ Back to Pulse</a> | 
+  <a href="/logout">🚪 Logout</a>
+</body>
+</html>

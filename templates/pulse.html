@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ScarHeart Pulse</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="header">
+    <h1>🖤 ScarHeart Pulse</h1>
+    <p>Tokens: {{ tokens }}</p>
+    <a href="/store">Go to Store</a> | 
+    <a href="/journal">View Journal</a> | 
+    <a href="/logout">Logout</a>
+  </div>
+
+  {% if message %}
+    <div class="message">{{ message }}</div>
+  {% endif %}
+
+  <div class="quote-box">
+    <em>"{{ quote }}"</em>
+  </div>
+
+  <div class="scar-challenge">
+    <strong>🩸 Scar Challenge:</strong><br>
+    {{ challenge }}
+  </div>
+
+  <div class="pulse-section">
+    <form method="POST">
+      <label>How do you feel today?</label><br>
+      <select name="mood">
+        <option value="numb">Numb</option>
+        <option value="burning">Burning</option>
+        <option value="healing">Healing</option>
+        <option value="cracked">Cracked</option>
+        <option value="strong">Strong</option>
+      </select><br><br>
+
+      <label>Optional Reflection:</label><br>
+      <textarea name="reflection" rows="3" cols="30" placeholder="Speak your scar..."></textarea><br><br>
+
+      <button type="submit">Submit Pulse</button>
+    </form>
+  </div>
+
+  <div class="avatar-toggle">
+    <img id="avatar" src="/static/scarheart_human.png" onclick="toggleAvatar()" width="100">
+  </div>
+
+  <script>
+    function toggleAvatar() {
+      var img = document.getElementById("avatar");
+      if (img.src.includes("human")) {
+        img.src = "/static/scarheart_heart.png";
+      } else {
+        img.src = "/static/scarheart_human.png";
+      }
+    }
+  </script>
+</body>
+</html>

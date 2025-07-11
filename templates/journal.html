@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ScarHeart Journal</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <h2>📖 ScarHeart Reflection Journal</h2>
+  <a href="/pulse">Back to Pulse</a> | <a href="/logout">Logout</a>
+  <div class="journal-entries">
+    {% for entry in history %}
+      <div class="entry">
+        <strong>{{ entry.date }}</strong> – Mood: {{ entry.mood }}<br>
+        <em>Challenge:</em> {{ entry.challenge }}<br>
+        {% if entry.reflection %}
+          <em>Reflection:</em> "{{ entry.reflection }}"
+        {% else %}
+          <em>No reflection added.</em>
+        {% endif %}
+        <hr>
+      </div>
+    {% endfor %}
+  </div>
+</body>
+</html>

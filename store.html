@@ -1,0 +1,18 @@
+<h2>🛍️ ScarHeart Store</h2>
+
+<p>You have 💎 {{ tokens }} ScarTokens</p>
+
+{% if message %}
+  <p>{{ message }}</p>
+{% endif %}
+
+<form method="POST">
+  {% for item in store %}
+    <div>
+      <strong>{{ item.name }}</strong> - {{ item.price }} Tokens
+      <button type="submit" name="item" value="{{ loop.index0 }}">Unlock</button>
+    </div>
+  {% endfor %}
+</form>
+
+<a href="/pulse">Back to Pulse</a>
