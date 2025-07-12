@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session, send_from_directory, send_file
+from flask import Flask, render_template, request, redirect, session, send_file, send_from_directory
 import json, os, zipfile
 from datetime import datetime, date
 from random import choice
@@ -27,7 +27,7 @@ quotes = [
     "Even a broken heart keeps beating.",
     "There is beauty in the burn and strength in survival.",
     "Pulse through the pain — become your own legend.",
-    "Every heartbeat etches a new chapter in your resurrection."
+    "Every heartbeat etches a new chapter in your resilience."
 ]
 
 # Scar Challenges
@@ -35,11 +35,11 @@ scar_challenges = [
     "Write one sentence about what hurt you but taught you.",
     "Draw your pain using only 3 lines.",
     "Speak a truth you’ve been hiding from yourself.",
-    "Take a deep breath, name what you’re grateful for right now.",
+    "Take a deep breath, name what you’re grateful for.",
     "What is one scar you wear with pride?",
     "Who would you be if fear had no voice?",
     "What does your heartbeat sound like today?",
-    "What would ScarHeart tell the younger you?",
+    "What would ScarHeart tell the younger you?"
 ]
 
 def get_daily_challenge():
@@ -81,11 +81,13 @@ def pulse():
         return redirect("/login")
     email = session["user"]
     user = users[email]
+    user.setdefault("tokens", 0)
+    user.setdefault("history", [])
 
     message = None
     if request.method == "POST":
         mood = request.form["mood"]
-        reflection = request.form.get("reflection", "").strip()
+        reflection = request.form.get("reflection", "")
         challenge = get_daily_challenge()
         user["tokens"] += 1
         user["history"].append({
@@ -95,7 +97,7 @@ def pulse():
             "reflection": reflection
         })
         save_json("users.json", users)
-        message = f"ScarHeart hears you... +1 Token for staying present through the {mood}."
+        message = f"ScarHeart hears you... +1 Token for reflection."
 
     return render_template(
         "pulse.html",
@@ -111,6 +113,7 @@ def store_route():
         return redirect("/login")
     email = session["user"]
     user = users[email]
+    user.setdefault("tokens", 0)
 
     message = None
     if request.method == "POST":
@@ -122,19 +125,19 @@ def store_route():
                 zip_path = "rewards_bundle.zip"
                 with zipfile.ZipFile(zip_path, 'w') as zipf:
                     for item in store:
-                        file_path = os.path.join("rewards", item["file"])
+                        file_path = os.path.join("rewards", item["filename"])
                         if os.path.exists(file_path):
-                            zipf.write(file_path, arcname=item["file"])
+                            zipf.write(file_path, arcname=item["filename"])
                 return send_file(zip_path, as_attachment=True)
             else:
-                message = "Not enough tokens for full unlock."
+                message = "Not enough tokens for full bundle."
         else:
             index = int(selected)
             item = store[index]
             if user["tokens"] >= item["price"]:
                 user["tokens"] -= item["price"]
                 save_json("users.json", users)
-                return send_from_directory("rewards", item["file"], as_attachment=True)
+                return send_from_directory("rewards", item["filename"], as_attachment=True)
             else:
                 message = "Not enough tokens."
 
@@ -146,8 +149,8 @@ def journal():
         return redirect("/login")
     email = session["user"]
     user = users[email]
-    history = user.get("history", [])
-    return render_template("journal.html", history=history)
+    user.setdefault("history", [])
+    return render_template("journal.html", history=user["history"])
 
 @app.route("/logout")
 def logout():
@@ -155,4 +158,5 @@ def logout():
     return redirect("/login")
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=True)
