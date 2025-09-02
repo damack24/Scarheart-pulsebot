@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session, send_file, send_from_directory
+from flask import Flask, render_template, request, redirect, session, send_file, send_from_directory, jsonify
 import json, os, zipfile
 from datetime import datetime, date
 from random import choice
@@ -104,7 +104,8 @@ def pulse():
         quote=choice(quotes),
         tokens=user["tokens"],
         message=message,
-        challenge=get_daily_challenge()
+        challenge=get_daily_challenge(),
+        wallet=user.get("wallet")   # pass wallet to template
     )
 
 @app.route("/store", methods=["GET", "POST"])
@@ -156,6 +157,25 @@ def journal():
 def logout():
     session.pop("user", None)
     return redirect("/login")
+
+@app.route('/api/save_wallet', methods=['POST'])
+def save_wallet():
+    if "user" not in session:
+        return jsonify({"status": "error", "message": "Not logged in"}), 401
+
+    data = request.get_json()
+    wallet_address = data.get("address")
+
+    if wallet_address:
+        email = session["user"]
+        user = users.get(email, {})
+        user["wallet"] = wallet_address   # 🔑 save wallet to user
+        users[email] = user
+        save_json("users.json", users)    # persist to disk
+
+        return jsonify({"status": "success", "wallet": wallet_address})
+
+    return jsonify({"status": "error", "message": "No address provided"}), 400
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))

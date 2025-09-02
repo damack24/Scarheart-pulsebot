@@ -28,5 +28,18 @@
         "reflection": "Today was good"
       }
     ]
+  },
+  "seventeenkilo@gmail.com": {
+    "password": "katt@101",
+    "tokens": 1,
+    "history": [
+      {
+        "date": "2025-09-02",
+        "mood": "peaceful",
+        "challenge": "Write one sentence about what hurt you but taught you.",
+        "reflection": "losing everything hurt me , but taught me how to be humble, and get a better perspective of the world "
+      }
+    ],
+    "wallet": "0xb5a2e634b73785fdfb2e36c24d7e79f8ac3ddbb2"
   }
 }

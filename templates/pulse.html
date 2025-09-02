@@ -3,14 +3,55 @@
 <head>
   <title>ScarHeart Pulse</title>
   <link rel="stylesheet" href="/static/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script>
+  <script type="module" src="/static/wallet.js"></script>
 </head>
 <body>
   <div class="header">
     <h1>🖤 ScarHeart Pulse</h1>
     <p>Tokens: {{ tokens }}</p>
-    <a href="/store">Go to Store</a> | 
-    <a href="/journal">View Journal</a> | 
+    <p id="token-balance">Tokens: loading...</p>
+    <a href="/store">Go to Store</a> |
+    <a href="/journal">View Journal</a> |
     <a href="/logout">Logout</a>
+    <br><br>
+
+    <!-- 🔑 Wallet connection -->
+    <button onclick="connectWallet(); getTokenBalance();">Connect Wallet</button>
+    <p id="wallet-address">
+      {% if wallet %}
+        Connected: {{ wallet }}
+      {% else %}
+        Not connected
+      {% endif %}
+    </p>
+
+    <!-- NFT & Token Actions -->
+    <div class="wallet-actions">
+      <button id="check-nft" onclick="checkNFTOwnership()" disabled>Check NFT Ownership</button>
+      <button id="claim-nft" onclick="claimNFT()" disabled>Claim / Mint NFT</button>
+      <br><br>
+
+      <!-- Send ERC-20 Tokens -->
+      <input type="text" id="send-token-address" placeholder="Recipient Address" disabled>
+      <input type="number" id="send-token-amount" placeholder="Amount" disabled>
+      <button id="send-token" onclick="sendTokens(document.getElementById('send-token-address').value, document.getElementById('send-token-amount').value)" disabled>Send Tokens</button>
+      <br><br>
+
+      <!-- Transfer NFT -->
+      <input type="text" id="transfer-nft-address" placeholder="Recipient Address" disabled>
+      <input type="number" id="transfer-nft-id" placeholder="NFT Token ID" disabled>
+      <button id="transfer-nft" onclick="transferNFT(document.getElementById('transfer-nft-address').value, document.getElementById('transfer-nft-id').value)" disabled>Transfer NFT</button>
+      <br><br>
+
+      <!-- Lazy Mint NFT -->
+      <input type="number" id="lazy-amount" placeholder="Amount to Mint" disabled>
+      <input type="text" id="lazy-baseuri" placeholder="Base URI for Tokens" disabled>
+      <button id="lazy-mint" onclick="lazyMintNFT(
+        parseInt(document.getElementById('lazy-amount').value),
+        document.getElementById('lazy-baseuri').value
+      )" disabled>Lazy Mint NFT</button>
+    </div>
   </div>
 
   {% if message %}
@@ -35,6 +76,12 @@
         <option value="healing">Healing</option>
         <option value="cracked">Cracked</option>
         <option value="strong">Strong</option>
+        <option value="resilient">Resilient</option>
+        <option value="vulnerable">Vulnerable</option>
+        <option value="angry">Angry</option>
+        <option value="hopeful">Hopeful</option>
+        <option value="lonely">Lonely</option>
+        <option value="peaceful">Peaceful</option>
       </select><br><br>
 
       <label>Optional Reflection:</label><br>
@@ -57,6 +104,56 @@
         img.src = "/static/scarheart_human.png";
       }
     }
+  </script>
+
+  <!-- Wallet auto-connect, token update, enable buttons -->
+  <script type="module">
+    import { connectWallet, getTokenBalance } from "/static/wallet.js";
+
+    function enableBlockchainButtons() {
+      const ids = ["check-nft", "claim-nft", "send-token", "transfer-nft", "lazy-mint"];
+      ids.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.disabled = false;
+      });
+
+      const inputs = ["send-token-address", "send-token-amount", "transfer-nft-address", "transfer-nft-id", "lazy-amount", "lazy-baseuri"];
+      inputs.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.disabled = false;
+      });
+    }
+
+    async function initWallet() {
+      if (typeof window.ethereum !== "undefined") {
+        try {
+          const accounts = await window.ethereum.request({ method: "eth_accounts" });
+          if (accounts.length > 0) {
+            const account = accounts[0];
+            document.getElementById("wallet-address").innerText = `Connected: ${account}`;
+
+            // Save to backend
+            await fetch("/api/save_wallet", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ address: account })
+            });
+
+            await getTokenBalance();
+            enableBlockchainButtons();
+
+            // Live token balance refresh every 10 seconds
+            setInterval(getTokenBalance, 10000);
+          }
+        } catch (err) {
+          console.error("Error initializing wallet:", err);
+        }
+      } else {
+        console.warn("MetaMask not detected");
+      }
+    }
+
+    window.addEventListener("load", initWallet);
   </script>
 </body>
 </html>
